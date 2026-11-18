@@ -4,30 +4,51 @@
 Студенти повинні доповнити цей файл тестами для своїх рішень.
 """
 import unittest
+import sys
+import os
 
-# TODO: Імпортуйте функції для тестування з вашого пакета
-# from src.назва_вашого_пакета.назва_модуля import ваша_функція
+# Додаємо шлях до src, щоб тести бачили пакет geometry_2d
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
-class TestLab6(unittest.TestCase):
+from geometry_2d import rectangle, circle
 
-    def test_example(self):
-        """Приклад тестового випадку."""
-        self.assertEqual(2 + 2, 4)
 
-    # TODO: Додайте тестові випадки для функцій у вашому пакеті.
-    # def test_your_function(self):
-    #     """Тестовий випадок для вашої_функції."""
-    #     # Приклад перевірки
-    #     self.assertEqual(ваша_функція(вхідні_дані), очікуваний_результат)
+class TestGeometry2D(unittest.TestCase):
+    """Клас для тестування геометричних функцій."""
 
-    # def test_another_function_with_edge_cases(self):
-    #     """Тестовий випадок для іншої_функції з граничними випадками."""
-    #     # Тест з нулем
-    #     self.assertEqual(інша_функція(0), очікуваний_для_нуля)
-    #     # Тест з від'ємним числом
-    #     self.assertEqual(інша_функція(-5), очікуваний_для_від'ємного)
-    #     # Тест з великим числом
-    #     self.assertEqual(інша_функція(1000), очікуваний_для_великого)
+    def test_rectangle_area(self):
+        """Тест обчислення площі прямокутника."""
+        self.assertEqual(rectangle.area(4, 5), 20)
+        self.assertEqual(rectangle.area(2.5, 4), 10.0)
+        self.assertEqual(rectangle.area(0, 10), 0)
+
+    def test_rectangle_perimeter(self):
+        """Тест обчислення периметра прямокутника."""
+        self.assertEqual(rectangle.perimeter(4, 5), 18)
+        self.assertEqual(rectangle.perimeter(2.5, 3.5), 12.0)
+
+    def test_rectangle_exceptions(self):
+        """Перевірка викидання винятків для некоректних даних прямокутника."""
+        with self.assertRaises(ValueError):
+            rectangle.area(-3, 5)
+        with self.assertRaises(ValueError):
+            rectangle.perimeter(4, -1)
+
+    def test_circle_area(self):
+        """Тест обчислення площі кола."""
+        self.assertAlmostEqual(circle.area(3), 28.27433388, places=5)
+        self.assertEqual(circle.area(0), 0)
+
+    def test_circle_circumference(self):
+        """Тест обчислення довжини кола."""
+        self.assertAlmostEqual(circle.circumference(3), 18.84955592, places=5)
+
+    def test_circle_exceptions(self):
+        """Перевірка викидання винятків для некоректних даних кола."""
+        with self.assertRaises(ValueError):
+            circle.area(-5)
+        with self.assertRaises(ValueError):
+            circle.circumference(-2.5)
 
 
 if __name__ == '__main__':
